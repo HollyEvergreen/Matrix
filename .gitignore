@@ -39,3 +39,7 @@
 
 # debug information files
 *.dwo
+/.vs/Matrix/CopilotIndices/17.14.670.39694
+/.vs/Matrix/FileContentIndex
+/.vs
+/out/build/x64-debug
