@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include <iostream>
 #include <filesystem>
+#include "Mesh/Vertex.hpp"
 
 Pipeline::Pipeline(const VulkanContext& ctx, const Swapchain& swapchain) {
     createRenderPass(ctx, swapchain.getFormat());
@@ -70,7 +71,15 @@ void Pipeline::createPipeline(const VulkanContext& ctx, vk::Extent2D extent) {
         {{}, vk::ShaderStageFlagBits::eFragment, *fragShader, "main"}
     };
 
-    vk::PipelineVertexInputStateCreateInfo vertexInput{};
+    vk::PipelineVertexInputStateCreateInfo vertexInput;
+    auto bindingDescription = Vertex::getBindingDescription();
+    auto attributeDescriptions = Vertex::getAttributeDescriptions();
+
+    vertexInput.vertexBindingDescriptionCount = 1;
+    vertexInput.vertexAttributeDescriptionCount = static_cast<uint32_t>(attributeDescriptions.size());
+    vertexInput.pVertexBindingDescriptions = &bindingDescription;
+    vertexInput.pVertexAttributeDescriptions = attributeDescriptions.data();
+
     vk::PipelineInputAssemblyStateCreateInfo inputAssembly{
         {}, vk::PrimitiveTopology::eTriangleList
     };
