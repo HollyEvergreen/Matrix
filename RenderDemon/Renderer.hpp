@@ -22,6 +22,8 @@ public:
     void handleResize();
     void drawMesh();
 
+    void drawUI();
+
 private:
     Window* m_window;
     const char* AppName;

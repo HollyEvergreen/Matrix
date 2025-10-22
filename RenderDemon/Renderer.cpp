@@ -132,3 +132,8 @@ void Renderer::drawMesh()
 {
 
 }
+
+void Renderer::drawUI() 
+{
+
+}
