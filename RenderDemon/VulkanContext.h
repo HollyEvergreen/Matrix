@@ -2,11 +2,11 @@
 #include <vulkan/vulkan_raii.hpp>
 #include <SDL3/SDL.h>
 #include "Window.h"
+#include "Renderer.hpp"
 
 class VulkanContext {
 public:
     VulkanContext();
-    VulkanContext(Window window);
     VulkanContext(SDL_Window* window);
     const vk::raii::Instance& getInstance() const { return *instance; }
     const vk::raii::Device& getDevice() const { return *device; }
@@ -15,7 +15,7 @@ public:
     const vk::raii::Queue& getPresentQueue() const { return *presentQueue; }
     uint32_t getGraphicsQueueFamily() const { return graphicsFamily; }
     uint32_t getPresentQueueFamily() const { return presentFamily; }
-
+    Renderer* renderer;
 private:
     void createInstance(SDL_Window* window);
     void pickPhysicalDevice(const vk::raii::SurfaceKHR& surface);

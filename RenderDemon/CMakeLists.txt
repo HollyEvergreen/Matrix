@@ -15,8 +15,8 @@ add_library (RenderDemon
 	"Pipeline.h" 
 	"Pipeline.cpp"
 	"Mesh/Vertex.hpp"
-	"Mesh/Vertex.cpp"
- "FrameResources.h" "FrameResources.cpp" "Mesh/Vertex.cpp")
+	"FrameResources.h"
+	"FrameResources.cpp")
 target_link_libraries(RenderDemon Vulkan::Vulkan)
 
 include_directories ("D:/VS2022/repos/Matrix/vendored/SDL/include")

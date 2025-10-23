@@ -34,6 +34,29 @@ void Pipeline::createRenderPass(const VulkanContext& ctx, vk::Format swapchainFo
     vk::RenderPassCreateInfo createInfo{ {}, colorAttachment, subpass, dependency };
     renderPass = std::make_unique<vk::raii::RenderPass>(ctx.getDevice(), createInfo);
 }
+/// <summary>
+/// Loads shader modules from the shaders in the shader list
+/// </summary>
+/// <param name="filename">path to the shader list to load</param>
+/// <returns></returns>
+std::vector<vk::ShaderModule> Pipeline::LoadShaders(const std::string& filename) {
+    auto f = fopen(filename.c_str(), "r");
+    std::vector<std::string> lines = {""};
+    char c;
+    int line_n = 0;
+    while ((c = fgetc(f)) != EOF) {
+        if (c == '\n') {
+            lines.emplace_back("");
+            line_n++;
+        }
+        lines[line_n] += c;
+    }
+    int i = 0;
+    for (auto& line : lines) {
+        std::cout << i++ << "| " << line << "\n";
+    }
+
+}
 
 std::vector<char> Pipeline::readShaderFile(const std::string& filename) {
     std::ifstream file(filename, std::ios::ate | std::ios::binary);
@@ -56,20 +79,12 @@ std::vector<char> Pipeline::readShaderFile(const std::string& filename) {
 }
 
 void Pipeline::createPipeline(const VulkanContext& ctx, vk::Extent2D extent) {
-    // Simple triangle shaders (compile with: glslangValidator -V shader.vert/frag -o vert/frag.spv)
-    // For this example, assume shaders are embedded or loaded from files
-    std::vector<char> vertCode = readShaderFile("./Shaders/out/vert.spv"); // Load your vertex shader
-    std::vector<char> fragCode = readShaderFile("./Shaders/out/frag.spv"); // Load your fragment shader
-
+    auto Shaders = LoadShaders(ctx.renderer->GetHomePath().string());
     
+    exit(-1);
 
-    auto vertShader = createShaderModule(ctx, vertCode);
-    auto fragShader = createShaderModule(ctx, fragCode);
+    std::vector<vk::PipelineShaderStageCreateInfo> shaderStages = {};
 
-    vk::PipelineShaderStageCreateInfo shaderStages[] = {
-        {{}, vk::ShaderStageFlagBits::eVertex, *vertShader, "main"},
-        {{}, vk::ShaderStageFlagBits::eFragment, *fragShader, "main"}
-    };
 
     vk::PipelineVertexInputStateCreateInfo vertexInput;
     auto bindingDescription = Vertex::getBindingDescription();

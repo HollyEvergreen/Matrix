@@ -1,18 +1,19 @@
+#pragma once
 #include <vulkan/vulkan_raii.hpp>
 #include <array>
 
-typedef struct Vertex {
+struct Vertex{
 	std::array<float, 3> pos;
 	std::array<float, 3> col;
 
 	static constexpr vk::VertexInputBindingDescription getBindingDescription() {
-		vk::VertexInputBindingDescription bindingDescription = 
-			 vk::VertexInputBindingDescription(
-				 0,
-				 sizeof(Vertex),
-				 vk::VertexInputRate::eVertex
-			 );
-		
+		vk::VertexInputBindingDescription bindingDescription =
+			vk::VertexInputBindingDescription(
+				0,
+				sizeof(Vertex),
+				vk::VertexInputRate::eVertex
+			);
+
 		return bindingDescription;
 	}
 	static constexpr std::array<vk::VertexInputAttributeDescription, 2> getAttributeDescriptions() {
@@ -20,7 +21,7 @@ typedef struct Vertex {
 			vk::VertexInputAttributeDescription(
 				0,
 				0,
-				vk::Format::eR32G32B32Sfloat, 
+				vk::Format::eR32G32B32Sfloat,
 				offsetof(Vertex, pos)
 			),
 			vk::VertexInputAttributeDescription(
