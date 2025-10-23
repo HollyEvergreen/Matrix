@@ -3,10 +3,8 @@
 #
 
 # Add source to this project's executable.
-add_library (MatrixEngine "MatrixEngine.cpp" "MatrixEngine.h")
-
-if (CMAKE_VERSION VERSION_GREATER 3.12)
-  set_property(TARGET MatrixEngine PROPERTY CXX_STANDARD 20)
-endif()
+project("MatrixEngine")
+add_library (${PROJECT_NAME} "MatrixEngine.cpp" "MatrixEngine.h")
+set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 20)
 
 # TODO: Add tests and install targets if needed.
