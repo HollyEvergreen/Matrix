@@ -2,21 +2,7 @@ find_package(Vulkan REQUIRED)
 
 include_directories("C:/VulkanSDK/1.4.313.2/Include")
 
-add_library (RenderDemon 
-	"Renderer.hpp" 
-	"Renderer.cpp" 
-	"Window.h" 
-	"Window.cpp" 
-	"WindowFlags.cpp" 
-	"VulkanContext.h" 
-	"VulkanContext.cpp" 
-	"Swapchain.h" 
-	"Swapchain.cpp" 
-	"Pipeline.h" 
-	"Pipeline.cpp"
-	"Mesh/Vertex.hpp"
-	"FrameResources.h"
-	"FrameResources.cpp")
+add_library(RenderDemon "blank.cpp")
 target_link_libraries(RenderDemon Vulkan::Vulkan)
 
 include_directories ("D:/VS2022/repos/Matrix/vendored/SDL/include")

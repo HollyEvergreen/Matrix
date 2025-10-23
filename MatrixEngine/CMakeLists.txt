@@ -4,7 +4,7 @@
 
 # Add source to this project's executable.
 project("MatrixEngine")
-add_library (${PROJECT_NAME} "MatrixEngine.cpp" "MatrixEngine.h")
+add_library (${PROJECT_NAME} "blank.cpp")
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 20)
 
 # TODO: Add tests and install targets if needed.
