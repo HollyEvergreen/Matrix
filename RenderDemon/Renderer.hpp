@@ -8,6 +8,8 @@
 #include "VulkanContext.hpp"
 #include "Devices.hpp"
 #include "Surface.hpp"
+#include <typeinfo>
+
 
 class Renderer
 {
@@ -45,7 +47,9 @@ public:
 
 		RenderSurface = new Surface(&vkInstanceHnd, _win);
 
-		std::cout << "Exit "<< ColourCodes[RED]<< class_name << ColourCodes[GREEN]  << " Constructor" << "\n";
+		
+		std::string _class_name = typeid(*this).name();
+		std::cout << std::format("Exit {} Constructor\n", style(_class_name, RED));
 	}
 
 	Renderer& Mainloop() const {
