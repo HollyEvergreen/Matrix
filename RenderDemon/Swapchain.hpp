@@ -5,6 +5,11 @@
 class Swapchain {
 	vk::SwapchainKHR m_SwapchainKHR;
 	std::vector<vk::Image> m_SwapchainImages;
+	std::vector<vk::UniqueImageView> m_SwapchainImageViews;
+
+	vk::ImageView& getView(int i) {
+		return *m_SwapchainImageViews[i];
+	}
 
 	SwapchainSupportDetails support;
 	vk::SurfaceFormatKHR surfaceFormat;
@@ -41,10 +46,43 @@ public:
 		try {
 			m_SwapchainKHR = device.GetDevice()->createSwapchainKHR(info);
 			std::cout << "Swapchain created successfully at <"<< ColourCodes[ConsoleColour::RED]<<"0x" << &m_SwapchainKHR << ColourCodes[ConsoleColour::GREEN] << ">\n";
-			m_SwapchainImages = device.GetDevice()->getSwapchainImagesKHR(m_SwapchainKHR);
+			
 		}
 		catch (vk::SystemError err) {
 			std::cout << err.code() << " " << err.what() << std::endl;
+			std::exit(-1);
+		}
+		m_SwapchainImages = device.GetDevice()->getSwapchainImagesKHR(m_SwapchainKHR);
+		m_SwapchainImageViews.resize(m_SwapchainImages.size());
+		int i = 0;
+		for (auto& image : m_SwapchainImages) {
+			auto info = vk::ImageViewCreateInfo();
+			info.setImage(image)
+				.setViewType(vk::ImageViewType::e2D)
+				.setFormat(surfaceFormat.format)
+				.setComponents(
+					vk::ComponentMapping{
+						vk::ComponentSwizzle::eIdentity,
+						vk::ComponentSwizzle::eIdentity,
+						vk::ComponentSwizzle::eIdentity,
+						vk::ComponentSwizzle::eIdentity
+					})
+				.setSubresourceRange(vk::ImageSubresourceRange{
+						vk::ImageAspectFlagBits::eColor,
+						0,
+						1,
+						0,
+						1
+					});
+			try {
+				m_SwapchainImageViews[i++] = device.GetDevice()->createImageViewUnique(info);
+				std::cout << "Image view " << i-1 << " created successfully at <" << style_static(&m_SwapchainImageViews[i - 1], RED) << ">\n";
+			}
+			catch (vk::SystemError err){
+				std::cout << "Image view <" << i-1 << "> Failed to be created\n" << err.code() << "\n" << err.what() << "\n";
+				std::exit(-1);
+			}
+
 		}
 	}
 };
