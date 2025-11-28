@@ -10,6 +10,7 @@
 #include "Surface.hpp"
 #include "Swapchain.hpp"
 #include <typeinfo>
+#include "Pipeline.hpp"
 
 
 class Renderer
@@ -19,6 +20,7 @@ public:
 	std::shared_ptr<Device> vkDeviceHnd;
 	std::shared_ptr<Surface> m_RenderSurface;
 	std::shared_ptr<Swapchain> m_Swapchain;
+	std::vector<Pipeline> m_Piplines;
 	const bool enableValidation = true;
 	const std::vector<const char*> validationLayers = {
 		"VK_LAYER_KHRONOS_validation",
@@ -52,6 +54,15 @@ public:
 
 		m_Swapchain = std::make_shared<Swapchain>(*vkDeviceHnd, _surface);
 
+		m_Piplines = {
+			Pipeline(),
+		};
+
+		if (!Matrix::Predicates::All<Pipeline>(m_Piplines, [](Pipeline _pipeline) {return _pipeline.AllShadersCompiled; })) {
+			for (auto& _pipeline : m_Piplines) {
+				_pipeline.CompileShaders();
+			}
+		}
 		std::string _class_name = typeid(*this).name();
 		std::cout << std::format("Exit {} Constructor\n", style(_class_name, RED));
 	}
