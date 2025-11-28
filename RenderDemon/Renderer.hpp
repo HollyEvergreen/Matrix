@@ -8,6 +8,7 @@
 #include "VulkanContext.hpp"
 #include "Devices.hpp"
 #include "Surface.hpp"
+#include "Swapchain.hpp"
 #include <typeinfo>
 
 
@@ -15,15 +16,16 @@ class Renderer
 {
 public:
 	GLFWwindow* _win;
-	Device* vkDeviceHnd;
-	Surface* RenderSurface;
+	std::shared_ptr<Device> vkDeviceHnd;
+	std::shared_ptr<Surface> m_RenderSurface;
+	std::shared_ptr<Swapchain> m_Swapchain;
 	const bool enableValidation = true;
 	const std::vector<const char*> validationLayers = {
 		"VK_LAYER_KHRONOS_validation",
 	};
 
 	Renderer() {
-		std::bitset<8> windowFlags = 0;//AppContext::Get<std::bitset<8>>("Window-Flags");
+		std::bitset<8> windowFlags = 0;
 		glfwInit();
 		glfwSetErrorCallback(GlfwErrorCallback);
 		glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
@@ -42,12 +44,14 @@ public:
 		std::cout << ColourCodes[RED] << instExtProps.size() << ColourCodes[GREEN] << " Extensions Supported\n";
 		int i = 0;
 		vkInstanceHnd = VulkanInstance();
-
-		vkDeviceHnd = new Device(vkInstanceHnd);
-
-		RenderSurface = new Surface(&vkInstanceHnd, _win);
-
+		m_RenderSurface = std::make_shared<Surface>(vkInstanceHnd, _win);
+		vk::SurfaceKHR _surface = *m_RenderSurface;
 		
+		vkDeviceHnd = std::make_shared<Device>(vkInstanceHnd, _surface);
+		auto vkDeviceQueue = vkDeviceHnd->GetQueue();
+
+		m_Swapchain = std::make_shared<Swapchain>(*vkDeviceHnd, _surface);
+
 		std::string _class_name = typeid(*this).name();
 		std::cout << std::format("Exit {} Constructor\n", style(_class_name, RED));
 	}

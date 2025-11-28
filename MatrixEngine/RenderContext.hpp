@@ -14,9 +14,9 @@ class RenderContext //: public Serializable
 {
 private:
 	using context_t = std::variant<
-		std::shared_ptr<ImGuiContext>,
-		std::shared_ptr<VulkanContext>,
-		std::shared_ptr<VulkanInstance>,
+		std::weak_ptr<ImGuiContext>,
+		std::weak_ptr<VulkanContext>,
+		std::weak_ptr<VulkanInstance>,
 		GLFWwindow*,
 		std::vector<const char*>,
 		int,

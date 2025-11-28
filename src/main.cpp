@@ -1,6 +1,25 @@
 #include <iostream>
-#include "../MatrixEngine/Matrix.hpp"
 #include <bitset>
+//#define MEM_DEBUG
+#ifdef MEM_DEBUG
+#include <assert.h>
+static int Allocations = 0;
+static int TotalBytesAllocated = 0;
+void* operator new(size_t size) {
+	if (size > 2048) {
+		__nop();
+	}
+	void* ptr = malloc(size);
+	std::cout << "Allocating " << size << " bytes. This is Allocation " << ++Allocations << ". The Location is " << ptr << ".\n";
+	assert(ptr != 0);
+	return ptr;
+}
+void operator delete(void* ptr){
+	std::cout << "Deleting " << ptr << "\n";
+	return free(ptr);
+}
+#endif
+#include "../MatrixEngine/Matrix.hpp"
 #include "../RenderDemon/Renderer.hpp"
 
 int main(int argc, char** argv) {
