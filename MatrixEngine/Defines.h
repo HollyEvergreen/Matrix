@@ -3,6 +3,8 @@
 #include <unordered_map>
 typedef std::array<int, 3> Version;
 
+#define type_to_str(t) #t
+
 #define to_vk_native(t, x) static_cast<t::NativeType>(x)
 #define to_vk_native_ptr(t, x) static_cast<t::NativeType*>(x)
 
