@@ -125,7 +125,7 @@ static std::unordered_map<ConsoleStyling, const char*> StylingCodes = {
 #define ResetStyling std::cout<<StylingCodes[RESET]<<ColourCodes[GREEN];
 
 #define style(str, col) std::format("{}{}{}", ColourCodes[col], str, ColourCodes[GREEN])
-#define style_static(str, col) ColourCodes[col] << str << ColourCodes[GREEN]
+#define style_cout(str, col) ColourCodes[col] << str << ColourCodes[GREEN]
 
 #define class_name typeid(*this).name()
 

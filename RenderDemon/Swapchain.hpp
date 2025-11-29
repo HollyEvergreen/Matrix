@@ -76,7 +76,7 @@ public:
 					});
 			try {
 				m_SwapchainImageViews[i++] = device.GetDevice()->createImageViewUnique(info);
-				std::cout << "Image view " << i-1 << " created successfully at <" << style_static(&m_SwapchainImageViews[i - 1], RED) << ">\n";
+				std::cout << "Image view " << i-1 << " created successfully at <" << style_cout(&m_SwapchainImageViews[i - 1], RED) << ">\n";
 			}
 			catch (vk::SystemError err){
 				std::cout << "Image view <" << i-1 << "> Failed to be created\n" << err.code() << "\n" << err.what() << "\n";

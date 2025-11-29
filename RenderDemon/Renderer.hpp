@@ -63,8 +63,7 @@ public:
 				_pipeline.CompileShaders();
 			}
 		}
-		std::string _class_name = typeid(*this).name();
-		std::cout << std::format("Exit {} Constructor\n", style(_class_name, RED));
+		std::cout << std::format("Exit {} Constructor\n", style(type_to_str(Renderer), RED));
 	}
 
 	Renderer& Mainloop() const {
