@@ -19,7 +19,7 @@ namespace Matrix {
 			for (T& obj : array) {
 				all &= action(obj);
 			}
-			return all
+			return all;
 		}
 	};
 }
