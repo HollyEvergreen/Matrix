@@ -1,9 +1,6 @@
 #pragma once
 #include <array>
 #include <unordered_map>
-
-#define type_to_string(x) #x
-
 typedef std::array<int, 3> Version;
 
 #define to_vk_native(t, x) static_cast<t::NativeType>(x)

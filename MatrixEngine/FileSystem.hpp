@@ -37,7 +37,7 @@ namespace Matrix {
 				fchain
 			}
 			static inline Path GetHomePath() {
-				return Path({"-C", "Users", "%USERPROFILE%", "AppData", "Roaming", "#AppName"});
+				return Path({"-C", "Users", "$User", "AppData", "Roaming", "#AppName"});
 			}
 			inline void Extend(size_t n) { path_components.reserve(n); _dirty = true; }
 			inline void invalidate_cache(){ _dirty = true; }
@@ -146,7 +146,11 @@ namespace Matrix {
 			void RemoveFile(File file);
 			void RemoveDir(Directory dir);
 
-			// Pass in subdirectories one at a time with function chaining
+			// Pass in subdirectories one at a time with function training
+			// e.g
+			// fileManager.cd("sub1")
+			//	     .cd("sub2")
+			//
 			inline FileManager& cd(const char* subdir) {
 				HomePath.append(subdir);
 				fchain
