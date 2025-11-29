@@ -1,3 +1,3 @@
 #include "AppContext.hpp"
 
-std::unordered_map<std::string, AppContext::context_t> AppContext::context;
+std::unordered_map<std::string, acontext_t> AppContext::context;

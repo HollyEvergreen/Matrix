@@ -9,23 +9,11 @@
 #include "defines.h"
 #include "../RenderDemon/VulkanContext.hpp"
 #include "../RenderDemon/VulkanInstance.hpp"
-
+#include "RenderContext_t.hpp"
 class RenderContext //: public Serializable
 {
 private:
-	using context_t = std::variant<
-		std::weak_ptr<ImGuiContext>,
-		std::weak_ptr<VulkanContext>,
-		std::weak_ptr<VulkanInstance>,
-		GLFWwindow*,
-		std::vector<const char*>,
-		int,
-		float,
-		std::bitset<8>,
-		std::bitset<16>,
-		std::bitset<32>,
-		std::bitset<64>,
-		Version>;
+	using context_t = rcontext_t;
 	static std::unordered_map<std::string, context_t> context;
 public:
 	static void Init(std::initializer_list<std::pair<std::string, context_t>> init) {
@@ -36,7 +24,7 @@ public:
 	}
 	template <typename T>
 	static const T& Get(const std::string& key) {
-		return std::get<T>(context[key]);
+		return std::get<T>(context[key]._data);
 	}
 	static void Insert(const std::string& key, context_t value) {
 		context.insert_or_assign(key, value);

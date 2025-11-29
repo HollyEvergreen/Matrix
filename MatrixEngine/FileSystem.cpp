@@ -1,4 +1,8 @@
 #include "FileSystem.hpp"
+#include "Predicates.hpp"
+#include <stack>
+#include <AppContext.hpp>
+
 namespace Matrix {
 	namespace Filesys {
 		const std::string& Path::path() {
@@ -7,7 +11,12 @@ namespace Matrix {
 			_path.clear();
 			simplify();
 			for (auto& component : path_components)
-				_path += component + path_sep;
+				if (Matrix::Predicates::Equivalent(component[0], '-'))
+					_path += std::format("{}://", component[1]);
+				else if (Matrix::Predicates::Equivalent(component[0], '#'));
+					//_path += AppContext::Get(component.substr(1));
+				else 
+					_path += component + path_sep;
 			_dirty = false;
 			return _path;
 		}
@@ -25,6 +34,40 @@ namespace Matrix {
 		}
 		void Path::simplify(void)
 		{
+			return;
+			constexpr char ControlChars[1] = {'$'};
+			auto Removals = std::stack<int>();
+			for (auto& Component : path_components) {
+				auto ControlChar = Component[0];
+				if (Matrix::Predicates::In<const char, 1>(ControlChars, ControlChar)) {
+					switch (ControlChar)
+					{
+					case ControlChars[0]: // $
+						auto varName = std::string_view(Component).substr(1).data();
+						const char* var = std::getenv(varName);
+						if (!var) {
+							var = ":(";
+						}
+						Component.assign(var);
+						break;
+					}
+				}
+				else {
+					int i = &Component - path_components.data();
+					if (Matrix::Predicates::Equivalent(Component.c_str(), ".")) {
+						Removals.push(i);
+					}
+					if (Matrix::Predicates::Equivalent(Component.c_str(), "..")) {
+						Removals.push(i-1);
+						Removals.push(i);
+					}
+					continue;
+				}
+			}
+			while (!Removals.empty()) {
+				path_components.erase(path_components.begin() + Removals.top());
+				Removals.pop();
+			}
 		}
 
 		template<class T>

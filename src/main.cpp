@@ -21,17 +21,30 @@ void operator delete(void* ptr){
 #endif
 #include "../MatrixEngine/Matrix.hpp"
 #include "../RenderDemon/Renderer.hpp"
+#include <imgui_internal.h>
+
+using namespace Matrix::Filesys;
+
+#define pth(t) std::cout << typeid(t).name() <<" = "<< typeid(t).hash_code() << ",\n";
 
 int main(int argc, char** argv) {
-	AppContext::Init({
-		{"App-Name", "NBA"},
-		{"Version", Version{0, 0, 0}},
-		{"Window-Width", 1280},
-		{"Window-Height", 720},
-		{"Window-flags", std::bitset<8>(0b1)}, // [little endian] 0: vsync, 
-		{"Target-FPS", -1}, // -1 refers to render as quickly as possible
-	});
+	auto path = Path::GetHomePath();
+
+	std::cout << path.path();
+
+	std::exit(69);
+	//AppContext::Init({
+	//	{"App-Name", "NBA"},
+	//	{"Version", Version{0, 0, 0}},
+	//	{"Window-Width", 1280},
+	//	{"Window-Height", 720},
+	//	{"Window-flags", std::bitset<8>(0b1)}, // [little endian] 0: vsync, 
+	//	{"Target-FPS", -1}, // -1 refers to render as quickly as possible
+	//	{"HomePath", Path::GetHomePath()}
+	//});
 	RenderContext::Init({});
+	FileManager _FileManager = FileManager(AppContext::Get<Path>("HomePath"));
+
 	auto renderer = Renderer();
 	
 	ResetStyling
